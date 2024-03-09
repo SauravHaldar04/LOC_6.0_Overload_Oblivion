@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:loc_6_overload_oblivion/resources/auth_methods.dart';
+import 'package:loc_6_overload_oblivion/staff_bottombar.dart';
 import 'package:loc_6_overload_oblivion/staff_home_page.dart';
 import 'package:loc_6_overload_oblivion/staff_signup.dart';
 import 'package:loc_6_overload_oblivion/user_type_selection.dart';
@@ -42,7 +43,7 @@ class _LoginPageState extends State<LoginPage> {
       } else {
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
-            builder: (context) => StaffHomePage(),
+            builder: (context) => StaffBottombar(),
           ),
         );
       }
@@ -248,10 +249,9 @@ class _LoginPageState extends State<LoginPage> {
                             child: Text(
                               'LOGIN',
                               style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 17
-                              ),
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 17),
                             ),
                           ),
                         ),

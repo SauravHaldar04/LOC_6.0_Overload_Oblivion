@@ -11,7 +11,7 @@ class Admin {
 
   Map<String, dynamic> toJson() {
     return {
-      'uid':uid,
+      'uid': uid,
       'email': email,
     };
   }

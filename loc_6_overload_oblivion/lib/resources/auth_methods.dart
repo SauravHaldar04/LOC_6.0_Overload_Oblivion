@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:loc_6_overload_oblivion/models/admin_model.dart';
 import 'package:loc_6_overload_oblivion/models/staff_model.dart';
+import 'package:loc_6_overload_oblivion/models/admin_model.dart';
 
 class AuthMethods {
   FirebaseAuth _auth = FirebaseAuth.instance;

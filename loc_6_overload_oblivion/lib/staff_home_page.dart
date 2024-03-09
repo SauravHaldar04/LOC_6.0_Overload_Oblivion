@@ -1,3 +1,4 @@
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart'; // Add this import statement
@@ -329,58 +330,43 @@ class _StaffHomePageState extends State<StaffHomePage> {
                               ),
                             ),
                           ),
-                          // ElevatedButton(
-                          //   onPressed: () async {
-                          //     final selectedDate =
-                          //         await showMyDatePicker(context);
-                          //     if (selectedDate != null) {
-                          //       setState(() {
-                          //         startDate = selectedDate;
-                          //       });
-                          //     }
-                          //   },
-                          //   child: Text('Select Start Date'),
-                          // ),
-                          // SizedBox(height: 20),
-                          // ElevatedButton(
-                          //   onPressed: () async {
-                          //     final selectedTime =
-                          //         await showMyTimePicker(context);
-                          //     if (selectedTime != null) {
-                          //       setState(() {
-                          //         startTime = selectedTime;
-                          //       });
-                          //     }
-                          //   },
-                          //   child: Text('Select Start Time'),
-                          // ),
-                          // SizedBox(height: 20),
-                          // ElevatedButton(
-                          //   onPressed: () async {
-                          //     final selectedDate =
-                          //         await showMyDatePicker(context);
-                          //     if (selectedDate != null) {
-                          //       setState(() {
-                          //         endDate = selectedDate;
-                          //       });
-                          //     }
-                          //   },
-                          //   child: Text('Select End Date'),
-                          // ),
-                          // SizedBox(height: 20),
-                          // ElevatedButton(
-                          //   onPressed: () async {
-                          //     final selectedTime =
-                          //         await showMyTimePicker(context);
-                          //     if (selectedTime != null) {
-                          //       setState(() {
-                          //         endTime = selectedTime;
-                          //       });
-                          //     }
-                          //   },
-                          //   child: Text('Select End Time'),
-                          // ),
                           SizedBox(height: 20),
+                          GestureDetector(
+                            child: DottedBorder(
+                              color: Colors.white,
+                              borderType: BorderType.RRect,
+                              dashPattern: const [10, 4],
+                              radius: const Radius.circular(10),
+                              strokeCap: StrokeCap.round,
+                              child: Container(
+                                height: 150,
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(50),
+                                ),
+                                child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const SizedBox(
+                                        height: 20,
+                                      ),
+                                      const Icon(
+                                        Icons.upload,
+                                        size: 40,
+                                      ),
+                                      const SizedBox(
+                                        height: 15,
+                                      ),
+                                      Text(
+                                        'Add Room Image Before Check In',
+                                        style: TextStyle(
+                                            fontSize: 15,
+                                            color: Colors.grey.shade400),
+                                      )
+                                    ]),
+                              ),
+                            ),
+                          ),
                           ElevatedButton(
                             onPressed: () {
                               if (startDate != null &&
