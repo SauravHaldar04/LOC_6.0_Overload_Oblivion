@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:loc_6_overload_oblivion/user_type_selection.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key});
@@ -20,6 +21,18 @@ class _LoginPageState extends State<LoginPage> {
             child: Image.asset(
               'assets/images/Image1.png', // Replace with your image path
               fit: BoxFit.cover,
+            ),
+          ),
+          Positioned(
+            
+            left:10,
+            top:25,
+            child: IconButton(
+              icon: Icon(Icons.arrow_back_ios, color: Colors.black,),
+              onPressed: () {
+                Navigator.of(context).pop();
+        
+              },
             ),
           ),
           Column(
@@ -129,7 +142,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       const SizedBox(height: 30),
                       Container(
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           gradient: LinearGradient(
                             colors: [
                               Color.fromRGBO(0, 229, 229, 1),
