@@ -87,7 +87,7 @@ class _LoginPage2State extends State<LoginPage2> {
               Center(
                 child: Container(
                   width: 311,
-                  height: 513,
+                  height: 463,
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
                     color: Color.fromRGBO(26, 25, 53, 0.74),

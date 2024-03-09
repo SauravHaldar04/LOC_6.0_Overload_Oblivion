@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:loc_6_overload_oblivion/resources/auth_methods.dart';
+import 'package:loc_6_overload_oblivion/staff_home_page.dart';
 import 'package:loc_6_overload_oblivion/staff_signup.dart';
 import 'package:loc_6_overload_oblivion/user_type_selection.dart';
 
@@ -41,7 +42,7 @@ class _LoginPageState extends State<LoginPage> {
       } else {
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
-            builder: (context) => Scaffold(),
+            builder: (context) => StaffHomePage(),
           ),
         );
       }
@@ -58,14 +59,15 @@ class _LoginPageState extends State<LoginPage> {
             ),
           ),
           Positioned(
-            
-            left:10,
-            top:25,
+            left: 10,
+            top: 25,
             child: IconButton(
-              icon: Icon(Icons.arrow_back_ios, color: Colors.black,),
+              icon: Icon(
+                Icons.arrow_back_ios,
+                color: Colors.black,
+              ),
               onPressed: () {
                 Navigator.of(context).pop();
-        
               },
             ),
           ),
@@ -84,7 +86,7 @@ class _LoginPageState extends State<LoginPage> {
               Center(
                 child: Container(
                   width: 311,
-                  height: 513,
+                  height: 499,
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
                     color: Color.fromRGBO(26, 25, 53, 0.74),
