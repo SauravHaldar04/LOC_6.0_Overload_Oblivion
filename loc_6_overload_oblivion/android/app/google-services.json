@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "163566901003",
+    "project_id": "loc-6-overload-oblivion",
+    "storage_bucket": "loc-6-overload-oblivion.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:163566901003:android:d067bcb761361f7b3e340e",
+        "android_client_info": {
+          "package_name": "com.example.loc_6_overload_oblivion"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBxrB53iUNDPGtdbHFWvLtLmP-6rYO966I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
