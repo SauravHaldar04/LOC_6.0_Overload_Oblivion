@@ -135,6 +135,10 @@ class _LoginPage2State extends State<LoginPage2> {
                                 color: Color.fromRGBO(8, 17, 40, 1),
                               ),
                             ),
+                            prefixIcon: Icon(
+                              Icons.account_circle_outlined,
+                              color: Colors.white,
+                            ),
                           ),
                         ),
                       ),
@@ -175,47 +179,46 @@ class _LoginPage2State extends State<LoginPage2> {
                                 color: Color.fromRGBO(8, 17, 40, 1),
                               ),
                             ),
+                            prefixIcon: Icon(
+                              Icons.password,
+                              color: Colors.white,
+                            ),
                           ),
                         ),
                       ),
                       const SizedBox(height: 30),
                       Container(
-                        decoration: const BoxDecoration(
+                        decoration: BoxDecoration(
                           gradient: LinearGradient(
                             colors: [
                               Color.fromRGBO(0, 229, 229, 1),
                               Color.fromRGBO(233, 97, 255, 1)
-                            ], // Adjust colors as desired
+                            ],
                           ),
+                          borderRadius: BorderRadius.circular(20),
                         ),
-                        width: 163,
+                        width: 169,
                         height: 48,
-                        child: ElevatedButton(
-                          onPressed: () {
+                        child: GestureDetector(
+                          onTap: () {
                             login();
                           },
-                          style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
+                          child: Center(
+                            child: Text(
+                              'LOGIN',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 17
+                              ),
                             ),
-                            textStyle: const TextStyle(
-                              color: Colors.black,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                            padding: const EdgeInsets.all(8),
-                            elevation: 4,
-                            shadowColor: Colors.black,
-                            backgroundColor: Colors
-                                .transparent, // Set the background color to transparent
                           ),
-                          child: const Text('Login'),
                         ),
                       ),
                       const SizedBox(height: 25),
                       const Text(
                         '-Or Sign in with Google-',
-                        style: TextStyle(fontSize: 12, color: Colors.white),
+                        style: TextStyle(fontSize: 15, color: Colors.white),
                       ),
                       const SizedBox(height: 15),
                       Stack(
@@ -251,7 +254,7 @@ class _LoginPage2State extends State<LoginPage2> {
                         child: const Text(
                           'Don’t have an account ? Signup',
                           style: TextStyle(
-                            fontSize: 12,
+                            fontSize: 15,
                             decoration: TextDecoration.underline,
                             color: Colors.white,
                           ),
