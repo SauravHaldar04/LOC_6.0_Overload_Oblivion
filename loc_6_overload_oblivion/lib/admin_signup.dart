@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:loc_6_overload_oblivion/admin_login.dart';
 import 'package:loc_6_overload_oblivion/resources/auth_methods.dart';
-import 'package:loc_6_overload_oblivion/staff_login.dart';
 
-class SignUpPage extends StatefulWidget {
-  const SignUpPage({Key? key});
+class SignUpPage2 extends StatefulWidget {
+  const SignUpPage2({Key? key});
 
   @override
-  State<SignUpPage> createState() => _SignUpPageState();
+  State<SignUpPage2> createState() => _SignUpPage2State();
 }
 
-class _SignUpPageState extends State<SignUpPage> {
-  TextEditingController _staffIdController = TextEditingController();
+class _SignUpPage2State extends State<SignUpPage2> {
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
   TextEditingController _confirmpasswordController = TextEditingController();
@@ -22,7 +21,6 @@ class _SignUpPageState extends State<SignUpPage> {
 
   @override
   void dispose() {
-    _staffIdController.dispose();
     _passwordController.dispose();
     _confirmpasswordController.dispose();
     super.dispose();
@@ -39,8 +37,7 @@ class _SignUpPageState extends State<SignUpPage> {
           ),
         );
       } else {
-        String res = await authMethods.signUpStaff(
-          staffid: _staffIdController.text,
+        String res = await authMethods.signUpAdmin(
           email: _emailController.text,
           password: _passwordController.text,
         );
@@ -132,44 +129,6 @@ class _SignUpPageState extends State<SignUpPage> {
                       ),
                       SizedBox(
                         height: 15,
-                      ),
-                      SizedBox(
-                        width: 281,
-                        height: 48,
-                        child: TextField(
-                          controller: _staffIdController,
-                          style: TextStyle(color: Colors.white),
-                          decoration: InputDecoration(
-                            filled: true,
-                            fillColor: Color.fromRGBO(8, 17, 40, 1),
-                            labelStyle: TextStyle(
-                              color: Color.fromRGBO(255, 255, 255, 1),
-                            ),
-                            hintStyle: TextStyle(
-                              color: Color.fromRGBO(255, 255, 255, 1),
-                            ),
-                            hintText: "Enter you Staff ID",
-                            labelText: "Staff ID",
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                              borderSide: BorderSide(
-                                color: Color.fromRGBO(8, 17, 40, 1),
-                              ),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                              borderSide: BorderSide(
-                                color: Color.fromRGBO(8, 17, 40, 1),
-                              ),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                              borderSide: BorderSide(
-                                color: Color.fromRGBO(8, 17, 40, 1),
-                              ),
-                            ),
-                          ),
-                        ),
                       ),
                       const SizedBox(height: 15),
                       SizedBox(
@@ -287,7 +246,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       GestureDetector(
                         onTap: () {
                           Navigator.of(context).push(
-                              MaterialPageRoute(builder: (_) => LoginPage()));
+                              MaterialPageRoute(builder: (_) => LoginPage2()));
                         },
                         child: const Text(
                           'Already have an account ? Login',

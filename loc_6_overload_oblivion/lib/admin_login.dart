@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:loc_6_overload_oblivion/admin_signup.dart';
 import 'package:loc_6_overload_oblivion/resources/auth_methods.dart';
-import 'package:loc_6_overload_oblivion/staff_login.dart';
+import 'package:loc_6_overload_oblivion/staff_signup.dart';
+import 'package:loc_6_overload_oblivion/user_type_selection.dart';
 
-class SignUpPage extends StatefulWidget {
-  const SignUpPage({Key? key});
-
+class LoginPage2 extends StatefulWidget {
+  const LoginPage2({Key? key});
   @override
-  State<SignUpPage> createState() => _SignUpPageState();
+  State<LoginPage2> createState() => _LoginPage2State();
 }
 
-class _SignUpPageState extends State<SignUpPage> {
-  TextEditingController _staffIdController = TextEditingController();
+class _LoginPage2State extends State<LoginPage2> {
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
-  TextEditingController _confirmpasswordController = TextEditingController();
 
   @override
   void initState() {
@@ -22,36 +21,31 @@ class _SignUpPageState extends State<SignUpPage> {
 
   @override
   void dispose() {
-    _staffIdController.dispose();
     _passwordController.dispose();
-    _confirmpasswordController.dispose();
+    _emailController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    AuthMethods authMethods = AuthMethods();
-    void signUp() async {
-      if (_passwordController.text != _confirmpasswordController.text) {
+    AuthMethods authMethod = AuthMethods();
+    void login() async {
+      String res = await authMethod.loginAdmin(
+        email: _emailController.text,
+        password: _passwordController.text,
+      );
+      if (res != 'Success') {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text("Please fill all the fields"),
+            content: Text(res),
           ),
         );
       } else {
-        String res = await authMethods.signUpStaff(
-          staffid: _staffIdController.text,
-          email: _emailController.text,
-          password: _passwordController.text,
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => Scaffold(),
+          ),
         );
-        if (res != "Success") {
-          ScaffoldMessenger.of(context)
-              .showSnackBar(SnackBar(content: Text(res)));
-          print(res.toString());
-        } else {
-          Navigator.of(context)
-              .pushReplacement(MaterialPageRoute(builder: (_) => Scaffold()));
-        }
       }
     }
 
@@ -65,11 +59,24 @@ class _SignUpPageState extends State<SignUpPage> {
               fit: BoxFit.cover,
             ),
           ),
+          Positioned(
+            left: 10,
+            top: 25,
+            child: IconButton(
+              icon: Icon(
+                Icons.arrow_back_ios,
+                color: Colors.black,
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ),
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Text(
-                'SIGN  UP',
+                'LOGIN',
                 style: TextStyle(
                     fontSize: 38,
                     fontWeight: FontWeight.bold,
@@ -80,7 +87,7 @@ class _SignUpPageState extends State<SignUpPage> {
               Center(
                 child: Container(
                   width: 311,
-                  height: 413,
+                  height: 513,
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
                     color: Color.fromRGBO(26, 25, 53, 0.74),
@@ -92,12 +99,13 @@ class _SignUpPageState extends State<SignUpPage> {
                       SizedBox(
                         height: 25,
                       ),
+                      SizedBox(height: 15),
                       SizedBox(
                         width: 281,
                         height: 48,
                         child: TextField(
-                          controller: _emailController,
                           style: TextStyle(color: Colors.white),
+                          controller: _emailController,
                           decoration: InputDecoration(
                             filled: true,
                             fillColor: Color.fromRGBO(8, 17, 40, 1),
@@ -109,47 +117,6 @@ class _SignUpPageState extends State<SignUpPage> {
                             ),
                             hintText: "Enter your email",
                             labelText: "E-mail",
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                              borderSide: BorderSide(
-                                color: Color.fromRGBO(8, 17, 40, 1),
-                              ),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                              borderSide: BorderSide(
-                                color: Color.fromRGBO(8, 17, 40, 1),
-                              ),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                              borderSide: BorderSide(
-                                color: Color.fromRGBO(8, 17, 40, 1),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      SizedBox(
-                        width: 281,
-                        height: 48,
-                        child: TextField(
-                          controller: _staffIdController,
-                          style: TextStyle(color: Colors.white),
-                          decoration: InputDecoration(
-                            filled: true,
-                            fillColor: Color.fromRGBO(8, 17, 40, 1),
-                            labelStyle: TextStyle(
-                              color: Color.fromRGBO(255, 255, 255, 1),
-                            ),
-                            hintStyle: TextStyle(
-                              color: Color.fromRGBO(255, 255, 255, 1),
-                            ),
-                            hintText: "Enter you Staff ID",
-                            labelText: "Staff ID",
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
                               borderSide: BorderSide(
@@ -211,49 +178,9 @@ class _SignUpPageState extends State<SignUpPage> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 15),
-                      SizedBox(
-                        width: 281,
-                        height: 48,
-                        child: TextField(
-                          style: TextStyle(color: Colors.white),
-                          controller: _confirmpasswordController,
-                          obscureText: true,
-                          decoration: InputDecoration(
-                            filled: true,
-                            fillColor: Color.fromRGBO(8, 17, 40, 1),
-                            hintStyle: TextStyle(
-                              color: Color.fromRGBO(255, 255, 255, 1),
-                            ),
-                            labelStyle: TextStyle(
-                              color: Color.fromRGBO(255, 255, 255, 1),
-                            ),
-                            hintText: 'Enter Your Password',
-                            labelText: 'Confirm Password',
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                              borderSide: BorderSide(
-                                color: Color.fromRGBO(8, 17, 40, 1),
-                              ),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                              borderSide: BorderSide(
-                                color: Color.fromRGBO(8, 17, 40, 1),
-                              ),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                              borderSide: BorderSide(
-                                color: Color.fromRGBO(8, 17, 40, 1),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
                       const SizedBox(height: 30),
                       Container(
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           gradient: LinearGradient(
                             colors: [
                               Color.fromRGBO(0, 229, 229, 1),
@@ -264,7 +191,9 @@ class _SignUpPageState extends State<SignUpPage> {
                         width: 163,
                         height: 48,
                         child: ElevatedButton(
-                          onPressed: signUp,
+                          onPressed: () {
+                            login();
+                          },
                           style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8),
@@ -280,17 +209,47 @@ class _SignUpPageState extends State<SignUpPage> {
                             backgroundColor: Colors
                                 .transparent, // Set the background color to transparent
                           ),
-                          child: const Text('Sign Up'),
+                          child: const Text('Login'),
                         ),
+                      ),
+                      const SizedBox(height: 25),
+                      const Text(
+                        '-Or Sign in with Google-',
+                        style: TextStyle(fontSize: 12, color: Colors.white),
+                      ),
+                      const SizedBox(height: 15),
+                      Stack(
+                        children: [
+                          Container(
+                            height: 70,
+                            width: 70,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Color.fromRGBO(8, 17, 40, 1),
+                            ),
+                          ),
+                          Positioned(
+                            left: 10,
+                            top: 10,
+                            bottom: 10,
+                            right: 10,
+                            child: CircleAvatar(
+                              radius: 21,
+                              backgroundColor: Color.fromRGBO(8, 17, 40, 1),
+                              backgroundImage:
+                                  AssetImage('assets/images/Google.png'),
+                            ),
+                          )
+                        ],
                       ),
                       const SizedBox(height: 13),
                       GestureDetector(
                         onTap: () {
                           Navigator.of(context).push(
-                              MaterialPageRoute(builder: (_) => LoginPage()));
+                              MaterialPageRoute(builder: (_) => SignUpPage2()));
                         },
                         child: const Text(
-                          'Already have an account ? Login',
+                          'Don’t have an account ? Signup',
                           style: TextStyle(
                             fontSize: 12,
                             decoration: TextDecoration.underline,

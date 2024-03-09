@@ -31,7 +31,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     AuthMethods authMethod = AuthMethods();
     void login() async {
-      String res = await authMethod.loginUser(
+      String res = await authMethod.loginStaff(
           email: _emailController.text,
           password: _passwordController.text,
           staffid: _staffIdController.text);

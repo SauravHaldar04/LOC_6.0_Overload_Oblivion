@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:loc_6_overload_oblivion/admin_login.dart';
 import 'package:loc_6_overload_oblivion/staff_login.dart';
 
 class UserTypeSelectionState extends StatefulWidget {
@@ -12,22 +13,17 @@ class UserTypeSelectionStateState extends State<UserTypeSelectionState> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-     
       body: Stack(
-        
         children: [
-          
           Positioned.fill(
             child: Image.asset(
               'assets/images/Image1.png', // Replace with your image path
               fit: BoxFit.cover,
             ),
           ),
-          
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              
               Text(
                 'Choose your Role',
                 style: TextStyle(
@@ -42,7 +38,11 @@ class UserTypeSelectionStateState extends State<UserTypeSelectionState> {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      Navigator.pushNamed(context, 'your_route_name');
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const LoginPage2(),
+                        ),
+                      );
                     },
                     child: Stack(
                       children: [
@@ -62,7 +62,8 @@ class UserTypeSelectionStateState extends State<UserTypeSelectionState> {
                           child: CircleAvatar(
                             radius: 21,
                             backgroundColor: Color.fromRGBO(8, 17, 40, 1),
-                            backgroundImage: AssetImage('assets/images/shield_person.png'),
+                            backgroundImage:
+                                AssetImage('assets/images/shield_person.png'),
                           ),
                         )
                       ],
@@ -72,10 +73,10 @@ class UserTypeSelectionStateState extends State<UserTypeSelectionState> {
                   GestureDetector(
                     onTap: () {
                       Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => const LoginPage(),
-          ),
-        );
+                        MaterialPageRoute(
+                          builder: (context) => const LoginPage(),
+                        ),
+                      );
                     },
                     child: Stack(
                       children: [
@@ -95,7 +96,8 @@ class UserTypeSelectionStateState extends State<UserTypeSelectionState> {
                           child: CircleAvatar(
                             radius: 3,
                             backgroundColor: Color.fromRGBO(8, 17, 40, 1),
-                            backgroundImage: AssetImage('assets/images/person_apron.png'),
+                            backgroundImage:
+                                AssetImage('assets/images/person_apron.png'),
                           ),
                         ),
                       ],
