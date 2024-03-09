@@ -20,70 +20,66 @@ class UserProfile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-     
-      body: Stack(
+      appBar: AppBar(
+        title: Text('User Profile'),
+      ),
+      body: Row(
         children: [
-          Positioned.fill(
-          child: Image.asset(
-            'assets/images/Image2.png', // Replace with your image path
-            fit: BoxFit.cover,
-          ),
-        ),
+          SizedBox(width: 95,),
           Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(height: 70),
-              Center(
-                child: Icon(
-                  Icons.person,
-                  size: 80,
-                ),
+              SizedBox(height: 15),
+              Icon(
+                Icons.person,
+                size: 80,
               ),
               SizedBox(height: 10),
-              Center(
-                child: Text(
-                  'Name: ${staffProfile.name}',
-                  style: TextStyle(fontSize: 24),
-                ),
-              ),
-              SizedBox(height: 10),
-              Center(
-                child: Text(
-                  'Staff-ID: ${staffProfile.staffId}',
-                  style: TextStyle(fontSize: 24),
-                ),
-              ),
-              SizedBox(height: 10),
-              Center(
-                child: Text(
-                  'Age: $age',
-                  style: TextStyle(fontSize: 24),
-                ),
-              ),
-              SizedBox(height: 20),
-              Center(
-                child: Text(
-                  'Performance Report',
-                  style: TextStyle(fontSize: 24),
-                ),
-              ),
-              SizedBox(height: 10),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  PerformanceSection(
-                    image: performanceImages[0],
-                    summary: performanceSummaries[0],
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      SizedBox(height: 10),
+                      Text(
+                        'Name: ${staffProfile.name}',
+                        style: TextStyle(fontSize: 24),
+                      ),
+                      SizedBox(height: 10),
+                      Text(
+                        'Staff-ID: ${staffProfile.staffId}',
+                        style: TextStyle(fontSize: 24),
+                      ),
+                      SizedBox(height: 10),
+                      Text(
+                        'Age: $age',
+                        style: TextStyle(fontSize: 24),
+                      ),
+                      SizedBox(height: 20),
+                      Text(
+                        'Performance Report',
+                        style: TextStyle(fontSize: 24),
+                      ),
+                      SizedBox(height: 10),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          PerformanceSection(
+                            image: performanceImages[0],
+                            summary: performanceSummaries[0],
+                          ),
+                          PerformanceSection(
+                            image: performanceImages[1],
+                            summary: performanceSummaries[1],
+                          ),
+                          PerformanceSection(
+                            image: performanceImages[2],
+                            summary: performanceSummaries[2],
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
-                  PerformanceSection(
-                    image: performanceImages[1],
-                    summary: performanceSummaries[1],
-                  ),
-                  PerformanceSection(
-                    image: performanceImages[2],
-                    summary: performanceSummaries[2],
-                  ),
-                ],
+                ),
               ),
             ],
           ),
