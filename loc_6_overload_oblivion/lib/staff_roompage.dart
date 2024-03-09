@@ -1,53 +1,33 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:slide_countdown/slide_countdown.dart';
 
 class RoomCard extends StatefulWidget {
   final String roomNo;
   final DateTime checkInTime;
   final DateTime checkOutTime;
+ 
 
   const RoomCard({
     Key? key,
     required this.roomNo,
     required this.checkInTime,
     required this.checkOutTime,
+    
   }) : super(key: key);
 
   @override
-  _RoomCardState createState() => _RoomCardState();
+  State<RoomCard> createState() => _RoomCardState();
 }
 
 class _RoomCardState extends State<RoomCard> {
-  late Timer _timer;
-  late Duration _countdownDuration;
+  Duration? duration;
 
   @override
   void initState() {
     super.initState();
-    _startCountdown();
-  }
-
-  @override
-  void dispose() {
-    _timer.cancel();
-    super.dispose();
-  }
-
-  void _startCountdown() {
-    final now = DateTime.now();
-    if (now.isBefore(widget.checkOutTime)) {
-      _countdownDuration = widget.checkOutTime.difference(now);
-      _timer = Timer.periodic(Duration(seconds: 1), (timer) {
-        setState(() {
-          if (_countdownDuration.inSeconds > 0) {
-            _countdownDuration = _countdownDuration - Duration(seconds: 1);
-          } else {
-            _timer.cancel();
-          }
-        });
-      });
-    }
+    duration = widget.checkOutTime.difference(widget.checkInTime);
   }
 
   @override
@@ -80,7 +60,7 @@ class _RoomCardState extends State<RoomCard> {
           ),
           SizedBox(height: 10),
           Text(
-            'Check-In Time: ${widget.checkInTime}',
+            'Check-In Date: ${widget.checkInTime.toLocal()}',
             style: TextStyle(
               color: Colors.white,
               fontSize: 16,
@@ -88,21 +68,23 @@ class _RoomCardState extends State<RoomCard> {
           ),
           SizedBox(height: 10),
           Text(
-            'Check-Out Time: ${widget.checkOutTime}',
+            'Check-Out Date: ${widget.checkOutTime.toLocal()}',
             style: TextStyle(
               color: Colors.white,
               fontSize: 16,
             ),
           ),
           SizedBox(height: 10),
-          if (_countdownDuration.inSeconds > 0)
-            Text(
-              'Time Remaining: ${_countdownDuration.inHours}:${_countdownDuration.inMinutes.remainder(60)}:${_countdownDuration.inSeconds.remainder(60)}',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 16,
-              ),
-            ),
+          // if (duration != null)
+          //   Text(
+          //     'Duration: ${duration!.inMilliseconds.toString()} milliseconds',
+          //     style: TextStyle(
+          //       color: Colors.white,
+          //       fontSize: 16,
+          //     ),
+          //   ),
+          SlideCountdown( duration: duration),
+
         ],
       ),
     );
@@ -110,8 +92,6 @@ class _RoomCardState extends State<RoomCard> {
 }
 
 class StaffRoomPage extends StatefulWidget {
-  const StaffRoomPage({Key? key}) : super(key: key);
-
   @override
   State<StaffRoomPage> createState() => _StaffRoomPageState();
 }
@@ -121,12 +101,14 @@ class _StaffRoomPageState extends State<StaffRoomPage> {
     RoomCard(
       roomNo: '101',
       checkInTime: DateTime(2022, 12, 1, 10, 0), // Replace with actual check-in time
-      checkOutTime: DateTime(2022, 12, 1, 12, 0), // Replace with actual check-out time
+      checkOutTime: DateTime(2022, 12, 1, 12, 0),
+       // Replace with actual check-out time
     ),
     RoomCard(
       roomNo: '102',
       checkInTime: DateTime(2022, 12, 1, 14, 0), // Replace with actual check-in time
-      checkOutTime: DateTime(2022, 12, 1, 16, 0), // Replace with actual check-out time
+      checkOutTime: DateTime(2022, 12, 1, 16, 0),
+      // Replace with actual check-out time
     ),
     // Add more room cards as needed
   ];
@@ -171,13 +153,18 @@ class _StaffRoomPageState extends State<StaffRoomPage> {
                   ),
                 ),
                 SizedBox(height: 20),
-                ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: _roomCards.length,
-                  itemBuilder: (context, index) {
-                    return _roomCards[index];
-                  },
+                SizedBox(
+                  height: 400,
+                  width: 380,
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: _roomCards.length,
+                    itemBuilder: (context, index) {
+                      return _roomCards[index];
+                    },
+                  ),
                 ),
+               
               ],
             ),
           ),

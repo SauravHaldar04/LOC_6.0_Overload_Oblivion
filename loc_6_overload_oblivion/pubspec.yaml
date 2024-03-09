@@ -46,6 +46,8 @@ dependencies:
   image: ^4.1.7
   image_picker: ^1.0.7
   uuid: ^4.3.3
+  timer_count_down: ^2.2.0
+  slide_countdown: ^1.5.2
 
 dev_dependencies:
   flutter_test:

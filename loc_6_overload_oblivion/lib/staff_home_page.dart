@@ -84,7 +84,7 @@ class _StaffHomePageState extends State<StaffHomePage> {
           // Background Image
           Positioned.fill(
             child: Image.asset(
-              'assets/images/Image1.png', // Replace with your image path
+              'assets/images/Image2.png', // Replace with your image path
               fit: BoxFit.cover,
             ),
           ),
