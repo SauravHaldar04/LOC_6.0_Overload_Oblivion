@@ -109,14 +109,14 @@ class _RoomCardState extends State<RoomCard> {
   }
 }
 
-class StaffHomePage extends StatefulWidget {
-  const StaffHomePage({Key? key}) : super(key: key);
+class StaffRoomPage extends StatefulWidget {
+  const StaffRoomPage({Key? key}) : super(key: key);
 
   @override
-  State<StaffHomePage> createState() => _StaffHomePageState();
+  State<StaffRoomPage> createState() => _StaffRoomPageState();
 }
 
-class _StaffHomePageState extends State<StaffHomePage> {
+class _StaffRoomPageState extends State<StaffRoomPage> {
   List<RoomCard> _roomCards = [
     RoomCard(
       roomNo: '101',

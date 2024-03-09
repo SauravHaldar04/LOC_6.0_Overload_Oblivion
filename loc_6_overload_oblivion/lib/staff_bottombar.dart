@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:loc_6_overload_oblivion/staff_home_page.dart';
+import 'package:loc_6_overload_oblivion/staff_roompage.dart';
 
 class StaffBottombar extends StatefulWidget {
   const StaffBottombar({Key? key}) : super(key: key);
@@ -13,7 +14,7 @@ class _StaffBottombarState extends State<StaffBottombar> {
 
   static final List<Widget> _widgetOptions = <Widget>[
     StaffHomePage(),
-    Scaffold(),
+    StaffRoomPage(),
   ];
 
   void _onItemTapped(int index) {
