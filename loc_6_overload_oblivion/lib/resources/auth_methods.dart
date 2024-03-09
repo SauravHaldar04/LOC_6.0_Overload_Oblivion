@@ -103,4 +103,14 @@ class AuthMethods {
       return err.toString();
     }
   }
+   Future<Staff> getStaffDetails() async {
+    User currentUser = _auth.currentUser!;
+    print(currentUser.email);
+    DocumentSnapshot snap =
+        await _firestore.collection('staff').doc(currentUser.uid).get();
+
+    // print((snap.data() as Map<String, dynamic>)['username'] as String);
+
+    return Staff.fromSnap(snap);
+  }
 }

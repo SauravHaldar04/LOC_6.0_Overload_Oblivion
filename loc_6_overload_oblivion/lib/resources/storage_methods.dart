@@ -1,5 +1,4 @@
 import 'dart:typed_data';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -9,9 +8,9 @@ import 'package:uuid/uuid.dart';
 class StorageMethods {
   final FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
   final _auth = FirebaseAuth.instance;
-  Future<String> uploadImage(String childName, Uint8List file) async {
-    Reference ref =
-        _firebaseStorage.ref().child(childName).child(_auth.currentUser!.uid);
+  Future<String> uploadImage(
+      String childName, String childName2, Uint8List file) async {
+    Reference ref = _firebaseStorage.ref().child(childName).child(childName2);
 
     UploadTask uploadTask = ref.putData(file);
     TaskSnapshot snapshot = await uploadTask;
@@ -20,6 +19,7 @@ class StorageMethods {
   }
 
   Future<String> postImage({
+    required String staffID,
     required int roomNo,
     required Uint8List image,
     required DateTime checkInTime,
@@ -27,11 +27,13 @@ class StorageMethods {
   }) async {
     String res = "Some error occured";
     try {
+      String scheduleId = Uuid().v1();
       String imageUrl = await StorageMethods().uploadImage(
         'checkInImages',
+        scheduleId,
         image,
       );
-      String scheduleId = Uuid().v1();
+
       Schedule schedule = Schedule(
         roomNo: roomNo,
         scheduleid: scheduleId,
@@ -39,6 +41,7 @@ class StorageMethods {
         encodedImage: '',
         checkInTime: checkInTime,
         checkOutTime: checkOutTime,
+        staffID: staffID
       );
       FirebaseFirestore.instance
           .collection('staff')
@@ -46,6 +49,21 @@ class StorageMethods {
           .collection('schedule')
           .doc(scheduleId)
           .set(schedule.toJson());
+      FirebaseFirestore.instance
+          .collection('rooms')
+          .doc(roomNo.toString())
+          .collection('schedule')
+          .doc(scheduleId)
+          .set(schedule.toJson());
+      FirebaseFirestore.instance
+          .collection('rooms')
+          .doc(roomNo.toString())
+          .update({
+        'status': 'occupied',
+        'checkInTime': checkInTime,
+        'checkOutTime': checkOutTime,
+        'staffID':staffID
+      });
       res = 'Image uploaded successfully';
     } catch (err) {
       return err.toString();
