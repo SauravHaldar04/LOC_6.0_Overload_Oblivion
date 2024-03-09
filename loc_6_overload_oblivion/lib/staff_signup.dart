@@ -127,6 +127,10 @@ class _SignUpPageState extends State<SignUpPage> {
                                 color: Color.fromRGBO(8, 17, 40, 1),
                               ),
                             ),
+                            prefixIcon: Icon(
+                              Icons.account_circle_outlined,
+                              color: Colors.white,
+                            ),
                           ),
                         ),
                       ),
@@ -168,6 +172,10 @@ class _SignUpPageState extends State<SignUpPage> {
                                 color: Color.fromRGBO(8, 17, 40, 1),
                               ),
                             ),
+                            prefixIcon: Icon(
+                              Icons.account_circle_outlined,
+                              color: Colors.white,
+                            ),
                           ),
                         ),
                       ),
@@ -208,7 +216,12 @@ class _SignUpPageState extends State<SignUpPage> {
                                 color: Color.fromRGBO(8, 17, 40, 1),
                               ),
                             ),
+                            prefixIcon: Icon(
+                              Icons.password,
+                              color: Colors.white,
+                            ),
                           ),
+                          
                         ),
                       ),
                       const SizedBox(height: 15),
@@ -248,6 +261,10 @@ class _SignUpPageState extends State<SignUpPage> {
                                 color: Color.fromRGBO(8, 17, 40, 1),
                               ),
                             ),
+                            prefixIcon: Icon(
+                              Icons.password,
+                              color: Colors.white,
+                            ),
                           ),
                         ),
                       ),
@@ -258,29 +275,27 @@ class _SignUpPageState extends State<SignUpPage> {
                             colors: [
                               Color.fromRGBO(0, 229, 229, 1),
                               Color.fromRGBO(233, 97, 255, 1)
-                            ], // Adjust colors as desired
+                            ],
                           ),
+                          borderRadius: BorderRadius.circular(20),
                         ),
-                        width: 163,
+                        width: 169,
                         height: 48,
-                        child: ElevatedButton(
-                          onPressed: signUp,
-                          style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
+                        child: GestureDetector(
+                          onTap: () {
+                          Navigator.of(context).push(
+                              MaterialPageRoute(builder: (_) => LoginPage()));
+                        },
+                          child: Center(
+                            child: Text(
+                              'SIGN UP',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 17
+                              ),
                             ),
-                            textStyle: const TextStyle(
-                              color: Colors.black,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                            padding: const EdgeInsets.all(8),
-                            elevation: 4,
-                            shadowColor: Colors.black,
-                            backgroundColor: Colors
-                                .transparent, // Set the background color to transparent
                           ),
-                          child: const Text('Sign Up'),
                         ),
                       ),
                       const SizedBox(height: 13),
@@ -292,7 +307,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         child: const Text(
                           'Already have an account ? Login',
                           style: TextStyle(
-                            fontSize: 12,
+                            fontSize: 16,
                             decoration: TextDecoration.underline,
                             color: Colors.white,
                           ),
