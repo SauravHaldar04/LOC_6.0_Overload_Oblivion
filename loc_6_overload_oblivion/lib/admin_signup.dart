@@ -43,8 +43,11 @@ class _SignUpPage2State extends State<SignUpPage2> {
           password: _passwordController.text,
         );
         if (res != "Success") {
-          ScaffoldMessenger.of(context)
-              .showSnackBar(SnackBar(content: Text(res)));
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(res),
+            ),
+          );
           print(res.toString());
         } else {
           Navigator.of(context)
@@ -130,7 +133,6 @@ class _SignUpPage2State extends State<SignUpPage2> {
                               color: Colors.white,
                             ),
                           ),
-                          
                         ),
                       ),
                       SizedBox(
@@ -239,17 +241,16 @@ class _SignUpPage2State extends State<SignUpPage2> {
                         height: 48,
                         child: GestureDetector(
                           onTap: () {
-                          Navigator.of(context).push(
-                              MaterialPageRoute(builder: (_) => LoginPage2()));
-                        },
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (_) => LoginPage2()));
+                          },
                           child: Center(
                             child: Text(
                               'SIGN UP',
                               style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 17
-                              ),
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 17),
                             ),
                           ),
                         ),

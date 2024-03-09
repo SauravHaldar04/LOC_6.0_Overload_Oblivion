@@ -1,7 +1,12 @@
+import 'dart:io';
+
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart'; // Add this import statement
+import 'package:flutter/widgets.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:loc_6_overload_oblivion/resources/storage_methods.dart';
+import 'package:loc_6_overload_oblivion/utils/utils.dart'; // Add this import statement
 
 class StaffHomePage extends StatefulWidget {
   const StaffHomePage({Key? key}) : super(key: key);
@@ -11,6 +16,7 @@ class StaffHomePage extends StatefulWidget {
 }
 
 class _StaffHomePageState extends State<StaffHomePage> {
+  Uint8List? _file;
   DateTime? startDateTime;
   DateTime? endDateTime;
 
@@ -18,9 +24,60 @@ class _StaffHomePageState extends State<StaffHomePage> {
   TimeOfDay? startTime;
   DateTime? endDate;
   TimeOfDay? endTime;
-
+  TextEditingController _roomNoController = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    postImage() async {
+      String res = await StorageMethods().postImage(
+        roomNo: int.parse(_roomNoController.text),
+        image: _file!,
+        checkInTime: startDateTime!,
+        checkOutTime: endDateTime!,
+      );
+
+      showSnackBar(context, res);
+    }
+
+    selectImage(BuildContext context) {
+      return showDialog(
+          context: context,
+          builder: (context) {
+            return SimpleDialog(
+              title: const Text('Create a post'),
+              children: [
+                SimpleDialogOption(
+                  child: const Text('Take photo'),
+                  onPressed: () async {
+                    Navigator.of(context).pop();
+                    Uint8List file =
+                        await pickImage(ImageSource.camera) as Uint8List;
+                    setState(() {
+                      _file = file;
+                    });
+                  },
+                ),
+                SimpleDialogOption(
+                  child: const Text('Choose from gallery'),
+                  onPressed: () async {
+                    Navigator.of(context).pop();
+                    Uint8List file =
+                        await pickImage(ImageSource.gallery) as Uint8List;
+                    setState(() {
+                      _file = file;
+                    });
+                  },
+                ),
+                SimpleDialogOption(
+                  child: const Text('Cancel'),
+                  onPressed: () async {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          });
+    }
+
     return Scaffold(
       body: Stack(
         children: [
@@ -117,6 +174,7 @@ class _StaffHomePageState extends State<StaffHomePage> {
                             width: 300,
                             height: 50,
                             child: TextField(
+                              controller: _roomNoController,
                               style: TextStyle(color: Colors.white),
                               decoration: InputDecoration(
                                 filled: true,
@@ -332,6 +390,9 @@ class _StaffHomePageState extends State<StaffHomePage> {
                           ),
                           SizedBox(height: 20),
                           GestureDetector(
+                            onTap: () {
+                              selectImage(context);
+                            },
                             child: DottedBorder(
                               color: Colors.white,
                               borderType: BorderType.RRect,
@@ -367,6 +428,9 @@ class _StaffHomePageState extends State<StaffHomePage> {
                               ),
                             ),
                           ),
+                          SizedBox(
+                            height: 20,
+                          ),
                           ElevatedButton(
                             onPressed: () {
                               if (startDate != null &&
@@ -387,13 +451,14 @@ class _StaffHomePageState extends State<StaffHomePage> {
                                   endTime!.hour,
                                   endTime!.minute,
                                 );
+                                postImage();
                                 print('Start DateTime: $startDateTime');
                                 print('End DateTime: $endDateTime');
                               } else {
                                 print('Please select start and end date/time');
                               }
                             },
-                            child: Text('Combine and Store DateTime'),
+                            child: Text('Add room'),
                           ),
                         ],
                       ),

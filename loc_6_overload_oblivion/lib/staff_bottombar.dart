@@ -47,17 +47,4 @@ class _StaffBottombarState extends State<StaffBottombar> {
   }
 }
 
-class RoomsListPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: Colors.white,
-      child: Center(
-        child: Text(
-          'Rooms List Page',
-          style: TextStyle(fontSize: 24),
-        ),
-      ),
-    );
-  }
-}
+
