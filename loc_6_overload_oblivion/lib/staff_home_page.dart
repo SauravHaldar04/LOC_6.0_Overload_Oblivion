@@ -6,10 +6,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:loc_6_overload_oblivion/models/staff_model.dart';
+import 'package:loc_6_overload_oblivion/provider/staff_provider.dart';
 import 'package:loc_6_overload_oblivion/resources/storage_methods.dart';
 import 'package:loc_6_overload_oblivion/utils/room_data.dart';
 import 'package:loc_6_overload_oblivion/utils/utils.dart'; // Add this import statement
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:provider/provider.dart';
 
 class StaffHomePage extends StatefulWidget {
   const StaffHomePage({Key? key}) : super(key: key);
@@ -30,9 +33,23 @@ class _StaffHomePageState extends State<StaffHomePage> {
   TimeOfDay? endTime;
   TextEditingController _roomNoController = TextEditingController();
   @override
+  void initState() {
+    // TODO: implement initState
+    addData();
+  }
+
+  void addData() async {
+    StaffProvider _staffProvider = Provider.of(context, listen: false);
+    await _staffProvider.refreshUser();
+  }
+
+  @override
   Widget build(BuildContext context) {
     postImage() async {
+      Staff _staff =
+          Provider.of<StaffProvider>(context, listen: false).getUser();
       String res = await StorageMethods().postImage(
+        staffID: _staff.staffid,
         roomNo: int.parse(_roomNoController.text),
         image: _file!,
         checkInTime: startDateTime!,

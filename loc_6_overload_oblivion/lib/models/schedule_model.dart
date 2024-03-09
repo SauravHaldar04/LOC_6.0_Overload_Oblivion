@@ -7,8 +7,10 @@ class Schedule {
   final String encodedImage;
   final DateTime checkInTime;
   final DateTime checkOutTime;
+  final String staffID;
 
   Schedule({
+    required this.staffID,
     required this.roomNo,
     required this.scheduleid,
     required this.imageUrl,
@@ -24,7 +26,9 @@ class Schedule {
       'encodedImage': encodedImage,
       'checkInTime': checkInTime,
       'checkOutTime': checkOutTime,
-      'roomNo': roomNo
+      'roomNo': roomNo,
+      'staffID': staffID
+
     };
   }
 
@@ -37,6 +41,8 @@ class Schedule {
         encodedImage: snapshot['encodedImage'],
         checkInTime: snapshot['checkInTime'],
         checkOutTime: snapshot['checkOutTime'],
-        roomNo: snapshot['roomNo']);
+        roomNo: snapshot['roomNo'],
+        staffID: snapshot['staffID']);
+
   }
 }

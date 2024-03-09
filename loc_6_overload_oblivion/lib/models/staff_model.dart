@@ -13,7 +13,7 @@ class Staff {
 
   Map<String, dynamic> toJson() {
     return {
-      'uid':uid,
+      'uid': uid,
       'staffid': staffid,
       'email': email,
     };

@@ -19,6 +19,7 @@ class StorageMethods {
   }
 
   Future<String> postImage({
+    required String staffID,
     required int roomNo,
     required Uint8List image,
     required DateTime checkInTime,
@@ -40,6 +41,7 @@ class StorageMethods {
         encodedImage: '',
         checkInTime: checkInTime,
         checkOutTime: checkOutTime,
+        staffID: staffID
       );
       FirebaseFirestore.instance
           .collection('staff')
@@ -58,6 +60,9 @@ class StorageMethods {
           .doc(roomNo.toString())
           .update({
         'status': 'occupied',
+        'checkInTime': checkInTime,
+        'checkOutTime': checkOutTime,
+        'staffID':staffID
       });
       res = 'Image uploaded successfully';
     } catch (err) {
