@@ -7,15 +7,20 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:loc_6_overload_oblivion/models/staff_model.dart';
 import 'package:loc_6_overload_oblivion/provider/staff_provider.dart';
+import 'package:loc_6_overload_oblivion/resources/storage_methods.dart';
 import 'package:loc_6_overload_oblivion/utils/utils.dart';
 import 'package:provider/provider.dart';
 import 'package:slide_countdown/slide_countdown.dart';
+
+Uint8List? _file1;
+Uint8List? _file2;
 
 class RoomCard extends StatefulWidget {
   final String roomNo;
   final DateTime checkInTime;
   final DateTime checkOutTime;
   final Function onTap;
+  final Function oncheckout;
   final String status;
 
   const RoomCard({
@@ -25,6 +30,7 @@ class RoomCard extends StatefulWidget {
     required this.checkOutTime,
     required this.onTap,
     required this.status,
+    required this.oncheckout,
   }) : super(key: key);
 
   @override
@@ -33,6 +39,8 @@ class RoomCard extends StatefulWidget {
 
 class _RoomCardState extends State<RoomCard> {
   Duration? duration;
+  bool isCheckout = false;
+  bool isCleaning = false;
 
   @override
   void initState() {
@@ -42,11 +50,9 @@ class _RoomCardState extends State<RoomCard> {
 
   @override
   Widget build(BuildContext context) {
-    Uint8List? _file1;
-    Uint8List? _file2;
-    bool isCheckout = false;
-
-    selectImage(BuildContext context, Uint8List? filearg) {
+    selectImage1(
+      BuildContext context,
+    ) {
       return showDialog(
           context: context,
           builder: (context) {
@@ -60,7 +66,7 @@ class _RoomCardState extends State<RoomCard> {
                     Uint8List file =
                         await pickImage(ImageSource.camera) as Uint8List;
                     setState(() {
-                      filearg = file;
+                      _file1 = file;
                     });
                   },
                 ),
@@ -71,7 +77,49 @@ class _RoomCardState extends State<RoomCard> {
                     Uint8List file =
                         await pickImage(ImageSource.gallery) as Uint8List;
                     setState(() {
-                      filearg = file;
+                      _file1 = file;
+                    });
+                  },
+                ),
+                SimpleDialogOption(
+                  child: const Text('Cancel'),
+                  onPressed: () async {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          });
+    }
+
+    selectImage2(
+      BuildContext context,
+    ) {
+      return showDialog(
+          context: context,
+          builder: (context) {
+            return SimpleDialog(
+              title: const Text('Create a post'),
+              children: [
+                SimpleDialogOption(
+                  child: const Text('Take photo'),
+                  onPressed: () async {
+                    Navigator.of(context).pop();
+                    Uint8List file =
+                        await pickImage(ImageSource.camera) as Uint8List;
+                    setState(() {
+                      _file2 = file;
+                    });
+                  },
+                ),
+                SimpleDialogOption(
+                  child: const Text('Choose from gallery'),
+                  onPressed: () async {
+                    Navigator.of(context).pop();
+                    Uint8List file =
+                        await pickImage(ImageSource.gallery) as Uint8List;
+                    setState(() {
+                      _file2 = file;
                     });
                   },
                 ),
@@ -158,45 +206,149 @@ class _RoomCardState extends State<RoomCard> {
               ),
             ],
           ),
-          isCheckout == true
-              ? GestureDetector(
-                  onTap: () {
-                    selectImage(context, _file1);
-                  },
-                  child: DottedBorder(
-                    color: Colors.white,
-                    borderType: BorderType.RRect,
-                    dashPattern: const [10, 4],
-                    radius: const Radius.circular(10),
-                    strokeCap: StrokeCap.round,
-                    child: Container(
-                      height: 150,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(50),
+          SizedBox(
+            height: 25,
+          ),
+          isCheckout
+              ? _file1 == null
+                  ? GestureDetector(
+                      onTap: () {
+                        selectImage1(context);
+                      },
+                      child: DottedBorder(
+                        color: Colors.white,
+                        borderType: BorderType.RRect,
+                        dashPattern: const [10, 4],
+                        radius: const Radius.circular(10),
+                        strokeCap: StrokeCap.round,
+                        child: Container(
+                          height: 150,
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(50),
+                          ),
+                          child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                const Icon(
+                                  Icons.upload,
+                                  size: 40,
+                                ),
+                                const SizedBox(
+                                  height: 15,
+                                ),
+                                Text(
+                                  'Add Room Image After Checkout',
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      color: Colors.grey.shade400),
+                                )
+                              ]),
+                        ),
                       ),
-                      child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const SizedBox(
-                              height: 20,
+                    )
+                  : Column(
+                      children: [
+                        Container(
+                          height: 300,
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(50),
+                            image: DecorationImage(
+                              image: MemoryImage(_file1!),
+                              fit: BoxFit.fill,
                             ),
-                            const Icon(
-                              Icons.upload,
-                              size: 40,
-                            ),
-                            const SizedBox(
-                              height: 15,
-                            ),
-                            Text(
-                              'Add Room Image After Checkout',
-                              style: TextStyle(
-                                  fontSize: 15, color: Colors.grey.shade400),
-                            )
-                          ]),
-                    ),
-                  ),
-                )
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            widget.oncheckout();
+                            isCleaning = true;
+                          },
+                          child: const Text('Add Room Image After Checkout'),
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        isCleaning
+                            ? _file2 == null
+                                ? GestureDetector(
+                                    onTap: () {
+                                      selectImage2(context);
+                                    },
+                                    child: DottedBorder(
+                                      color: Colors.white,
+                                      borderType: BorderType.RRect,
+                                      dashPattern: const [10, 4],
+                                      radius: const Radius.circular(10),
+                                      strokeCap: StrokeCap.round,
+                                      child: Container(
+                                        height: 150,
+                                        width: double.infinity,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(50),
+                                        ),
+                                        child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              const SizedBox(
+                                                height: 20,
+                                              ),
+                                              const Icon(
+                                                Icons.upload,
+                                                size: 40,
+                                              ),
+                                              const SizedBox(
+                                                height: 15,
+                                              ),
+                                              Text(
+                                                'Add Room Image After Cleaning',
+                                                style: TextStyle(
+                                                    fontSize: 15,
+                                                    color:
+                                                        Colors.grey.shade400),
+                                              )
+                                            ]),
+                                      ),
+                                    ),
+                                  )
+                                : Column(
+                                    children: [
+                                      Container(
+                                        height: 300,
+                                        width: double.infinity,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(50),
+                                          image: DecorationImage(
+                                            image: MemoryImage(_file2!),
+                                            fit: BoxFit.fill,
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        height: 20,
+                                      ),
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          widget.oncheckout();
+                                        },
+                                        child: const Text(
+                                            'Add Room Image After Cleaning'),
+                                      ),
+                                    ],
+                                  )
+                            : Container()
+                      ],
+                    )
               : Container()
 
           // if (duration != null)
@@ -222,6 +374,31 @@ class _StaffRoomPageState extends State<StaffRoomPage> {
   @override
   Widget build(BuildContext context) {
     Staff _staff = Provider.of<StaffProvider>(context, listen: false).getUser();
+    postImage(String roomNo) async {
+      Staff _staff =
+          Provider.of<StaffProvider>(context, listen: false).getUser();
+      QuerySnapshot scheduleSnapshot = await FirebaseFirestore.instance
+          .collection('rooms')
+          .doc(roomNo) // Assuming roomNo is the document ID
+          .collection('schedule')
+          .get();
+
+      if (scheduleSnapshot.docs.isNotEmpty) {
+        // Assuming you're only interested in the first schedule document
+        String scheduleId = scheduleSnapshot.docs.first['scheduleid'];
+
+        String res = await StorageMethods().postImage2(
+          roomNo: int.parse(roomNo),
+          image: _file1!,
+          scheduleId: scheduleId,
+        );
+
+        showSnackBar(context, res);
+      } else {
+        print('No schedule found for this room');
+      }
+    }
+
     return Scaffold(
       body: Stack(
         children: [
@@ -261,7 +438,7 @@ class _StaffRoomPageState extends State<StaffRoomPage> {
                 ),
                 SizedBox(height: 20),
                 SizedBox(
-                    height: MediaQuery.of(context).size.height - 150,
+                    height: MediaQuery.of(context).size.height - 300,
                     width: 380,
                     child: StreamBuilder(
                       stream: FirebaseFirestore.instance
@@ -281,13 +458,23 @@ class _StaffRoomPageState extends State<StaffRoomPage> {
                             ConnectionState.waiting) {
                           return Center(child: CircularProgressIndicator());
                         }
+
                         return ListView.builder(
                             shrinkWrap: true,
                             itemCount: snapshot.data!.docs.length,
                             itemBuilder: (context, index) {
                               DocumentSnapshot room =
                                   snapshot.data!.docs[index];
+
                               return RoomCard(
+                                  oncheckout: () {
+                                    print('checkout');
+                                    print(room['roomNo']);
+                                    print(room['status']);
+                                    postImage(
+                                      room['roomNo'],
+                                    );
+                                  },
                                   status: room['status'],
                                   onTap: () {
                                     if (room.exists) {

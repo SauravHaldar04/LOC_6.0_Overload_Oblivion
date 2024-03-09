@@ -512,6 +512,7 @@ class _StaffHomePageState extends State<StaffHomePage> {
                                       endTime!.hour,
                                       endTime!.minute,
                                     );
+
                                     postImage();
                                     _file = null;
                                     setState(() {
