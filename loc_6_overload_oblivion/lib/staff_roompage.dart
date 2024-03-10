@@ -21,6 +21,7 @@ class RoomCard extends StatefulWidget {
   final DateTime checkOutTime;
   final Function onTap;
   final Function oncheckout;
+  final Function oncleanup;
   final String status;
 
   const RoomCard({
@@ -31,6 +32,7 @@ class RoomCard extends StatefulWidget {
     required this.onTap,
     required this.status,
     required this.oncheckout,
+    required this.oncleanup,
   }) : super(key: key);
 
   @override
@@ -339,7 +341,10 @@ class _RoomCardState extends State<RoomCard> {
                                       ),
                                       ElevatedButton(
                                         onPressed: () {
-                                          widget.oncheckout();
+                                          widget.oncleanup();
+                                          setState(() {
+                                            _file1 = null;
+                                          });
                                         },
                                         child: const Text(
                                             'Add Room Image After Cleaning'),
@@ -388,8 +393,35 @@ class _StaffRoomPageState extends State<StaffRoomPage> {
         String scheduleId = scheduleSnapshot.docs.first['scheduleid'];
 
         String res = await StorageMethods().postImage2(
+          cleanStartTime: DateTime.now(),
           roomNo: int.parse(roomNo),
           image: _file1!,
+          scheduleId: scheduleId,
+        );
+
+        showSnackBar(context, res);
+      } else {
+        print('No schedule found for this room');
+      }
+    }
+
+    postImage2(String roomNo) async {
+      Staff _staff =
+          Provider.of<StaffProvider>(context, listen: false).getUser();
+      QuerySnapshot scheduleSnapshot = await FirebaseFirestore.instance
+          .collection('rooms')
+          .doc(roomNo) // Assuming roomNo is the document ID
+          .collection('schedule')
+          .get();
+
+      if (scheduleSnapshot.docs.isNotEmpty) {
+        // Assuming you're only interested in the first schedule document
+        String scheduleId = scheduleSnapshot.docs.first['scheduleid'];
+
+        String res = await StorageMethods().postImage3(
+          cleanEndTime: DateTime.now(),
+          roomNo: int.parse(roomNo),
+          image: _file2!,
           scheduleId: scheduleId,
         );
 
@@ -467,6 +499,18 @@ class _StaffRoomPageState extends State<StaffRoomPage> {
                                   snapshot.data!.docs[index];
 
                               return RoomCard(
+                                  oncleanup: () async {
+                                    print('cleanup');
+                                    print(room['roomNo']);
+                                    print(room['status']);
+                                    await postImage2(
+                                      room['roomNo'],
+                                    );
+                                    await room.reference.update({
+                                      'status': 'vacant',
+                                    });
+                                    _file2 = null;
+                                  },
                                   oncheckout: () {
                                     print('checkout');
                                     print(room['roomNo']);

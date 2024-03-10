@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
 import 'package:loc_6_overload_oblivion/models/schedule_model.dart';
 import 'package:uuid/uuid.dart';
 
@@ -75,6 +76,7 @@ class StorageMethods {
     required int roomNo,
     required Uint8List image,
     required String scheduleId,
+    required DateTime cleanStartTime,
   }) async {
     String res = "Some error occured";
     try {
@@ -91,6 +93,12 @@ class StorageMethods {
           .update({
         'checkOutImage': imageUrl,
           });
+          FirebaseFirestore.instance
+          .collection('staff')
+          .doc(_auth.currentUser!.uid)
+          .update({
+        'cleanStartTime': cleanStartTime,
+          });
       FirebaseFirestore.instance
           .collection('rooms')
           .doc(roomNo.toString())
@@ -104,6 +112,53 @@ class StorageMethods {
           .doc(roomNo.toString())
           .update({
         'checkOutImage': imageUrl
+      });
+      res = 'Image uploaded successfully';
+    } catch (err) {
+      return err.toString();
+    }
+    return res;
+  }
+  Future<String> postImage3({
+    required int roomNo,
+    required Uint8List image,
+    required String scheduleId,
+    required DateTime cleanEndTime,
+  }) async {
+    String res = "Some error occured";
+    try {
+      String imageUrl = await StorageMethods().uploadImage(
+        'cleanUpImages',
+        scheduleId,
+        image,
+      );
+      FirebaseFirestore.instance
+          .collection('staff')
+          .doc(_auth.currentUser!.uid)
+          .collection('schedule')
+          .doc(scheduleId)
+          .update({
+        'cleanupImage': imageUrl,
+          });
+          FirebaseFirestore.instance
+          .collection('staff')
+          .doc(_auth.currentUser!.uid)
+          .update({
+        'cleanEndTime': cleanEndTime,
+          });
+      FirebaseFirestore.instance
+          .collection('rooms')
+          .doc(roomNo.toString())
+          .collection('schedule')
+          .doc(scheduleId)
+          .update({
+        'cleanupImage': imageUrl,
+          });
+      FirebaseFirestore.instance
+          .collection('rooms')
+          .doc(roomNo.toString())
+          .update({
+        'cleanupImage': imageUrl
       });
       res = 'Image uploaded successfully';
     } catch (err) {
