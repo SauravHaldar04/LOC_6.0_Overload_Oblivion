@@ -1,10 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:loc_6_overload_oblivion/firebase_options.dart';
 import 'package:loc_6_overload_oblivion/splash_screen.dart';
 import 'package:loc_6_overload_oblivion/admin_homepage.dart';
 
-class UserProfile extends StatelessWidget {
+class UserProfile extends StatefulWidget {
+  final String uid;
   final String name;
   final String staffId;
   final String age;
@@ -12,6 +14,7 @@ class UserProfile extends StatelessWidget {
   final List<String> performanceSummaries;
 
   UserProfile({
+    required this.uid,
     required this.staffId,
     required this.name,
     required this.age,
@@ -19,6 +22,11 @@ class UserProfile extends StatelessWidget {
     required this.performanceSummaries,
   });
 
+  @override
+  State<UserProfile> createState() => _UserProfileState();
+}
+
+class _UserProfileState extends State<UserProfile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,17 +53,17 @@ class UserProfile extends StatelessWidget {
                     children: [
                       SizedBox(height: 10),
                       Text(
-                        'Name: ${name}',
+                        'Name: ${widget.name}',
                         style: TextStyle(fontSize: 24),
                       ),
                       SizedBox(height: 10),
                       Text(
-                        'Staff-ID: ${staffId}',
+                        'Staff-ID: ${widget.staffId}',
                         style: TextStyle(fontSize: 24),
                       ),
                       SizedBox(height: 10),
                       Text(
-                        'Age: $age',
+                        'Age: ${widget.age}',
                         style: TextStyle(fontSize: 24),
                       ),
                       SizedBox(height: 20),
@@ -64,23 +72,51 @@ class UserProfile extends StatelessWidget {
                         style: TextStyle(fontSize: 24),
                       ),
                       SizedBox(height: 10),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          PerformanceSection(
-                            image: performanceImages[0],
-                            summary: performanceSummaries[0],
-                          ),
-                          PerformanceSection(
-                            image: performanceImages[1],
-                            summary: performanceSummaries[1],
-                          ),
-                          PerformanceSection(
-                            image: performanceImages[2],
-                            summary: performanceSummaries[2],
-                          ),
-                        ],
-                      ),
+                      // StreamBuilder(
+                      //   stream: FirebaseFirestore.instance
+                      //       .collection('staff')
+                      //       .where('uid', isEqualTo: widget.uid)
+                      //       .snapshots(),
+                      //   builder: (context, snapshot) {
+                      //     if (snapshot.hasError) {
+                      //       return Text('Error: ${snapshot.error}');
+                      //     }
+
+                      //     if (snapshot.connectionState ==
+                      //         ConnectionState.waiting) {
+                      //       return Center(child: CircularProgressIndicator());
+                      //     }
+
+                      //     final staffData =
+                      //         snapshot.data! as Map<String, dynamic>;
+                      //     if (staffData == null) return Text('No data found');
+
+                      //     // Assuming 'schedule' is the subcollection name
+                      //     final List<String> imageUrls = [];
+                      //     if (staffData['schedule'] as Map<String, dynamic> !=
+                      //         null) {
+                      //       for (var scheduleItem in staffData['schedule']) {
+                      //         if (scheduleItem['imageUrl'] != null) {
+                      //           imageUrls.add(scheduleItem['imageUrl']);
+                      //         }
+                      //         if (scheduleItem['checkOutImage'] != null) {
+                      //           imageUrls.add(scheduleItem['checkOutImage']);
+                      //         }
+                      //         if (scheduleItem['cleanUpImage'] != null) {
+                      //           imageUrls.add(scheduleItem['cleanUpImage']);
+                      //         }
+                      //       }
+                      //     }
+
+                      //     // Replace the empty itemCount and itemBuilder with your logic
+                      //     return ListView.builder(
+                      //       itemCount: imageUrls.length,
+                      //       itemBuilder: (context,
+                      //               index) => // Your widget to display the image
+                      //           Image.network(imageUrls[index]),
+                      //     );
+                      //   },
+                      // )
                     ],
                   ),
                 ),

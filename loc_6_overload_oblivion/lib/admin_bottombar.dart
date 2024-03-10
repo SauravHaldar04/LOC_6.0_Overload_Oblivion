@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:loc_6_overload_oblivion/admin_homepage.dart';
+import 'package:loc_6_overload_oblivion/analysis.dart';
 import 'package:loc_6_overload_oblivion/staff_roompage.dart';
 
 class AdminBottombar extends StatefulWidget {
@@ -14,7 +15,7 @@ class _AdminBottombarState extends State<AdminBottombar> {
 
   static final List<Widget> _widgetOptions = <Widget>[
     AdminHomepage(),
-    Scaffold(),
+    Analysis(),
   ];
 
   void _onItemTapped(int index) {
@@ -47,5 +48,3 @@ class _AdminBottombarState extends State<AdminBottombar> {
     );
   }
 }
-
-

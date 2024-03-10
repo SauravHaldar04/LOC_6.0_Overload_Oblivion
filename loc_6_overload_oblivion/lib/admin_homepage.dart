@@ -46,6 +46,8 @@ class _AdminHomepageState extends State<AdminHomepage> {
                           context,
                           MaterialPageRoute(
                             builder: (context) => UserProfile(
+                                uid:
+                                    snapshot.data!.docs.elementAt(index)['uid'],
                                 name: staffProfiles[index],
                                 staffId: snapshot.data!.docs
                                     .elementAt(index)['staffid'],
