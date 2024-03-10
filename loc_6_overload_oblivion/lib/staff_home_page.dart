@@ -24,6 +24,7 @@ class StaffHomePage extends StatefulWidget {
 class _StaffHomePageState extends State<StaffHomePage> {
   Uint8List? _file;
   bool isClicked = false;
+  bool isClicked2=false;
   DateTime? startDateTime;
   DateTime? endDateTime;
 
@@ -189,11 +190,53 @@ class _StaffHomePageState extends State<StaffHomePage> {
                     ),
                   ),
                 ),
+                SizedBox(height: 10),
+                 GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      isClicked2 = !isClicked2;
+                    
+                    });
+                  },
+                  child: Container(
+                    padding: EdgeInsets.all(20),
+                    width: MediaQuery.of(context).size.width - 50,
+                    decoration: BoxDecoration(
+                      color: const Color.fromARGB(255, 58, 58, 58),
+                      borderRadius: BorderRadius.circular(10),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.2),
+                          blurRadius: 5,
+                          offset: Offset(0, 3),
+                          
+                        ),
+                      ],
+                    ),
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.add,
+                          color: Colors.white,
+                          size: 40,
+                        ),
+                        SizedBox(width: 40),
+                        Text(
+                          'Analyze Room',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
                 SizedBox(height: 20),
                 isClicked
                     ? Container(
                         padding: EdgeInsets.all(20),
-                        height: 500,
+                        height: 470,
                         width: MediaQuery.of(context).size.width - 50,
                         decoration: BoxDecoration(
                           color: Color.fromARGB(99, 40, 40, 40),
@@ -434,6 +477,131 @@ class _StaffHomePageState extends State<StaffHomePage> {
                                   ),
                                 ),
                               ),
+                              SizedBox(height: 20),
+                              _file == null
+                                  ? GestureDetector(
+                                      onTap: () {
+                                        selectImage(context);
+                                      },
+                                      child: DottedBorder(
+                                        color: Colors.white,
+                                        borderType: BorderType.RRect,
+                                        dashPattern: const [10, 4],
+                                        radius: const Radius.circular(10),
+                                        strokeCap: StrokeCap.round,
+                                        child: Container(
+                                          height: 150,
+                                          width: double.infinity,
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(50),
+                                          ),
+                                          child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                const SizedBox(
+                                                  height: 20,
+                                                ),
+                                                const Icon(
+                                                  Icons.upload,
+                                                  size: 40,
+                                                ),
+                                                const SizedBox(
+                                                  height: 15,
+                                                ),
+                                                Text(
+                                                  'Add Room Image Before Check In',
+                                                  style: TextStyle(
+                                                      fontSize: 15,
+                                                      color:
+                                                          Colors.grey.shade400),
+                                                )
+                                              ]),
+                                        ),
+                                      ),
+                                    )
+                                  : Container(
+                                      height: 300,
+                                      width: double.infinity,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(50),
+                                        image: DecorationImage(
+                                          image: MemoryImage(_file!),
+                                          fit: BoxFit.fill,
+                                        ),
+                                      ),
+                                    ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              ElevatedButton(
+                                onPressed: () {
+                                  if (startDate != null &&
+                                      startTime != null &&
+                                      endDate != null &&
+                                      endTime != null) {
+                                    startDateTime = DateTime(
+                                      startDate!.year,
+                                      startDate!.month,
+                                      startDate!.day,
+                                      startTime!.hour,
+                                      startTime!.minute,
+                                    );
+                                    endDateTime = DateTime(
+                                      endDate!.year,
+                                      endDate!.month,
+                                      endDate!.day,
+                                      endTime!.hour,
+                                      endTime!.minute,
+                                    );
+
+                                    postImage();
+                                    _file = null;
+                                    setState(() {
+                                      isClicked = !isClicked;
+                                    });
+                                    print('Start DateTime: $startDateTime');
+                                    print('End DateTime: $endDateTime');
+                                  } else {
+                                    print(
+                                        'Please select start and end date/time');
+                                  }
+                                },
+                                child: Text('Add room'),
+                              ),
+                            ],
+                          ),
+                        ),
+                      )
+                    : Container(),
+                    isClicked2
+                    ? Container(
+                        padding: EdgeInsets.all(20),
+                        height: 500,
+                        width: MediaQuery.of(context).size.width - 50,
+                        decoration: BoxDecoration(
+                          color: Color.fromARGB(99, 40, 40, 40),
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.2),
+                              blurRadius: 7,
+                              offset: Offset(0, 5),
+                            ),
+                          ],
+                        ),
+                        child: SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              SizedBox(
+                                height: 25,
+                              ),
+                             
+                             
+                             
+                             
+                              
                               SizedBox(height: 20),
                               _file == null
                                   ? GestureDetector(
