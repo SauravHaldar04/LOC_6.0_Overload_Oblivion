@@ -18,6 +18,7 @@ class _AnalysisState extends State<Analysis> {
   List<dynamic> items = [];
   Uint8List? _file;
   Uint8List? _file2;
+  Uint8List? _file3;
   @override
   void initState() {
     super.initState();
@@ -54,7 +55,6 @@ class _AnalysisState extends State<Analysis> {
 
   Future<void> postImageGetData() async {
     // Convert the selected image to base64 format
-    ;
 
     // Send the POST request with the base64 image
     var response = await http.post(
@@ -74,8 +74,10 @@ class _AnalysisState extends State<Analysis> {
 
       // Update the item counts in the state
       setState(() {
-        // items = jsonData['class_names_and_counts'].toList();
-        print(itemCounts);
+        //items = jsonData['class_names'].toList();
+        //print(itemCounts);
+        _file3 = base64Decode(jsonData['image']);
+        //print(base64Encode(_file3));
       });
     }
   }
@@ -248,11 +250,48 @@ class _AnalysisState extends State<Analysis> {
                       onPressed: () {
                         setState(() {
                           _file2 = null;
+
                           items = [];
                         });
                       },
                       child: Text('Clear Image')),
                 ),
+                // SizedBox(
+                //   height: 200,
+                //   width: double.infinity,
+                //   child: Center(
+                //     child: ListView.builder(
+                //         itemCount: items.length,
+                //         itemBuilder: (context, index) {
+                //           return Padding(
+                //             padding: const EdgeInsets.all(15.0),
+                //             child: Center(
+                //               child: Text(
+                //                 'There are ${items[index]} ${items[index][0]} ',
+                //                 style: TextStyle(
+                //                     fontWeight: FontWeight.bold, fontSize: 20),
+                //               ),
+                //             ),
+                //           );
+                //         }),
+                //   ),
+                // ),
+                SizedBox(
+                  height: 30,
+                ),
+                _file3 == null
+                    ? Container()
+                    : Container(
+                        height: 400,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(50),
+                          image: DecorationImage(
+                            image: MemoryImage(_file3!),
+                            fit: BoxFit.fill,
+                          ),
+                        ),
+                      ),
                 _file == null
                     ? GestureDetector(
                         onTap: () {

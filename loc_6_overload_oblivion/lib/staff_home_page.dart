@@ -634,7 +634,10 @@ class _StaffHomePageState extends State<StaffHomePage> {
                                     );
 
                                     postImage();
-                                    _file = null;
+                                    setState(() {
+                                      _file = null;
+                                    });
+
                                     setState(() {
                                       isClicked = !isClicked;
                                     });
@@ -739,17 +742,17 @@ class _StaffHomePageState extends State<StaffHomePage> {
                                 },
                                 child: Text('Add room'),
                               ),
-ElevatedButton(
-  onPressed: () {
-    // Navigate to another page
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => Analysis()),
-    );
-  },
-  child: Text('Get Analysis'),
-),
-                              
+                              ElevatedButton(
+                                onPressed: () {
+                                  // Navigate to another page
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => Analysis()),
+                                  );
+                                },
+                                child: Text('Get Analysis'),
+                              ),
                             ],
                           ),
                         ),
