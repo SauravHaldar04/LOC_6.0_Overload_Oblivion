@@ -18,7 +18,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [ChangeNotifierProvider(create: (context) => StaffProvider())],
-      child: MaterialApp(theme: ThemeData.dark(), home: SplashScreen()));
+        providers: [
+          ChangeNotifierProvider(create: (context) => StaffProvider())
+        ],
+        child: MaterialApp(
+            debugShowCheckedModeBanner: false,
+            theme: ThemeData.dark(),
+            home: SplashScreen()));
   }
 }

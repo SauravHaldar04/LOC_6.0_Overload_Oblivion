@@ -74,8 +74,8 @@ class _AnalysisState extends State<Analysis> {
 
       // Update the item counts in the state
       setState(() {
-        //items = jsonData['class_names'].toList();
-        //print(itemCounts);
+        items = jsonData['class_names'].toList();
+        print(items);
         _file3 = base64Decode(jsonData['image']);
         //print(base64Encode(_file3));
       });
