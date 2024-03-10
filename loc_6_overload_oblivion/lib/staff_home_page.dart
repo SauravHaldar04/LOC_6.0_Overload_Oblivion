@@ -1,11 +1,13 @@
+import 'dart:convert';
 import 'dart:io';
-
+import 'package:http/http.dart' as http;
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:loc_6_overload_oblivion/global/global_variables.dart';
 import 'package:loc_6_overload_oblivion/models/staff_model.dart';
 import 'package:loc_6_overload_oblivion/provider/staff_provider.dart';
 import 'package:loc_6_overload_oblivion/resources/storage_methods.dart';
@@ -23,8 +25,9 @@ class StaffHomePage extends StatefulWidget {
 
 class _StaffHomePageState extends State<StaffHomePage> {
   Uint8List? _file;
+  Uint8List? _file2;
   bool isClicked = false;
-  bool isClicked2=false;
+  bool isClicked2 = false;
   DateTime? startDateTime;
   DateTime? endDateTime;
 
@@ -46,6 +49,41 @@ class _StaffHomePageState extends State<StaffHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    Future<void> cleanliness() async {
+      try {
+        var response =
+            await http.post(Uri.parse('${GlobalVariables.url}/predict'),
+                headers: <String, String>{
+                  'Content-Type': 'application/json; charset=UTF-8',
+                },
+                body: jsonEncode({'image': base64Encode(_file2!)}));
+        print(response.body);
+        showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: Text('Cleanliness Analysis'),
+                content: jsonDecode(response.body)['predicted_labels'][0] ==
+                        'messy'
+                    ? Text(
+                        'The room is ${jsonDecode(response.body)['predicted_labels'][0]} and the level of dirtiness is ${jsonDecode(response.body)['score']}% ')
+                    : Text(
+                        'The room is ${jsonDecode(response.body)['predicted_labels'][0]} and the level of cleanliness is ${jsonDecode(response.body)['score']}% '),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Text('OK'),
+                  ),
+                ],
+              );
+            });
+      } catch (e) {
+        print(e.toString());
+      }
+    }
+
     postImage() async {
       Staff _staff =
           Provider.of<StaffProvider>(context, listen: false).getUser();
@@ -99,6 +137,46 @@ class _StaffHomePageState extends State<StaffHomePage> {
                         await pickImage(ImageSource.gallery) as Uint8List;
                     setState(() {
                       _file = file;
+                    });
+                  },
+                ),
+                SimpleDialogOption(
+                  child: const Text('Cancel'),
+                  onPressed: () async {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          });
+    }
+
+    selectImage2(BuildContext context) {
+      return showDialog(
+          context: context,
+          builder: (context) {
+            return SimpleDialog(
+              title: const Text('Create a post'),
+              children: [
+                SimpleDialogOption(
+                  child: const Text('Take photo'),
+                  onPressed: () async {
+                    Navigator.of(context).pop();
+                    Uint8List file =
+                        await pickImage(ImageSource.camera) as Uint8List;
+                    setState(() {
+                      _file2 = file;
+                    });
+                  },
+                ),
+                SimpleDialogOption(
+                  child: const Text('Choose from gallery'),
+                  onPressed: () async {
+                    Navigator.of(context).pop();
+                    Uint8List file =
+                        await pickImage(ImageSource.gallery) as Uint8List;
+                    setState(() {
+                      _file2 = file;
                     });
                   },
                 ),
@@ -191,11 +269,10 @@ class _StaffHomePageState extends State<StaffHomePage> {
                   ),
                 ),
                 SizedBox(height: 10),
-                 GestureDetector(
+                GestureDetector(
                   onTap: () {
                     setState(() {
                       isClicked2 = !isClicked2;
-                    
                     });
                   },
                   child: Container(
@@ -209,7 +286,6 @@ class _StaffHomePageState extends State<StaffHomePage> {
                           color: Colors.black.withOpacity(0.2),
                           blurRadius: 5,
                           offset: Offset(0, 3),
-                          
                         ),
                       ],
                     ),
@@ -575,7 +651,7 @@ class _StaffHomePageState extends State<StaffHomePage> {
                         ),
                       )
                     : Container(),
-                    isClicked2
+                isClicked2
                     ? Container(
                         padding: EdgeInsets.all(20),
                         height: 500,
@@ -597,16 +673,11 @@ class _StaffHomePageState extends State<StaffHomePage> {
                               SizedBox(
                                 height: 25,
                               ),
-                             
-                             
-                             
-                             
-                              
                               SizedBox(height: 20),
-                              _file == null
+                              _file2 == null
                                   ? GestureDetector(
                                       onTap: () {
-                                        selectImage(context);
+                                        selectImage2(context);
                                       },
                                       child: DottedBorder(
                                         color: Colors.white,
@@ -652,7 +723,7 @@ class _StaffHomePageState extends State<StaffHomePage> {
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(50),
                                         image: DecorationImage(
-                                          image: MemoryImage(_file!),
+                                          image: MemoryImage(_file2!),
                                           fit: BoxFit.fill,
                                         ),
                                       ),
@@ -661,37 +732,9 @@ class _StaffHomePageState extends State<StaffHomePage> {
                                 height: 20,
                               ),
                               ElevatedButton(
-                                onPressed: () {
-                                  if (startDate != null &&
-                                      startTime != null &&
-                                      endDate != null &&
-                                      endTime != null) {
-                                    startDateTime = DateTime(
-                                      startDate!.year,
-                                      startDate!.month,
-                                      startDate!.day,
-                                      startTime!.hour,
-                                      startTime!.minute,
-                                    );
-                                    endDateTime = DateTime(
-                                      endDate!.year,
-                                      endDate!.month,
-                                      endDate!.day,
-                                      endTime!.hour,
-                                      endTime!.minute,
-                                    );
-
-                                    postImage();
-                                    _file = null;
-                                    setState(() {
-                                      isClicked = !isClicked;
-                                    });
-                                    print('Start DateTime: $startDateTime');
-                                    print('End DateTime: $endDateTime');
-                                  } else {
-                                    print(
-                                        'Please select start and end date/time');
-                                  }
+                                onPressed: () async {
+                                  await cleanliness();
+                                  _file2 = null;
                                 },
                                 child: Text('Add room'),
                               ),
@@ -725,7 +768,7 @@ class _StaffHomePageState extends State<StaffHomePage> {
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime(2020, 1, 1),
-      lastDate: DateTime.now(),
+      lastDate: DateTime(2025, 1, 1),
     );
     if (selectedDate != null) {
       // Do something with the selected date

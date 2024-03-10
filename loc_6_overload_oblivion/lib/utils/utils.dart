@@ -19,6 +19,3 @@ showSnackBar(BuildContext context, String content) {
     SnackBar(content: Text(content)),
   );
 }
-
-
-

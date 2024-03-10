@@ -27,7 +27,9 @@ class UserProfile extends StatelessWidget {
       ),
       body: Row(
         children: [
-          SizedBox(width: 95,),
+          SizedBox(
+            width: 95,
+          ),
           Column(
             children: [
               SizedBox(height: 15),

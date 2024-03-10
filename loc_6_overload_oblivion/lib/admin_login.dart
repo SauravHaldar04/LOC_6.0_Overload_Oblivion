@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:loc_6_overload_oblivion/admin_bottombar';
+
+import 'package:loc_6_overload_oblivion/admin_bottombar.dart';
 import 'package:loc_6_overload_oblivion/admin_homepage.dart';
 import 'package:loc_6_overload_oblivion/admin_signup.dart';
 import 'package:loc_6_overload_oblivion/resources/auth_methods.dart';
@@ -209,10 +210,9 @@ class _LoginPage2State extends State<LoginPage2> {
                             child: Text(
                               'LOGIN',
                               style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 17
-                              ),
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 17),
                             ),
                           ),
                         ),
