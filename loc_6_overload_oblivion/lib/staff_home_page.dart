@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:loc_6_overload_oblivion/analysis.dart';
 import 'package:loc_6_overload_oblivion/models/staff_model.dart';
 import 'package:loc_6_overload_oblivion/provider/staff_provider.dart';
 import 'package:loc_6_overload_oblivion/resources/storage_methods.dart';
@@ -695,6 +696,17 @@ class _StaffHomePageState extends State<StaffHomePage> {
                                 },
                                 child: Text('Add room'),
                               ),
+ElevatedButton(
+  onPressed: () {
+    // Navigate to another page
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => Analysis()),
+    );
+  },
+  child: Text('Get Analysis'),
+),
+                              
                             ],
                           ),
                         ),
