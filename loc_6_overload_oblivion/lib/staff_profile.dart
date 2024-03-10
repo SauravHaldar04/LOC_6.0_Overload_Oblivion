@@ -5,13 +5,15 @@ import 'package:loc_6_overload_oblivion/splash_screen.dart';
 import 'package:loc_6_overload_oblivion/admin_homepage.dart';
 
 class UserProfile extends StatelessWidget {
-  final StaffProfile staffProfile;
+  final String name;
+  final String staffId;
   final String age;
   final List<String> performanceImages;
   final List<String> performanceSummaries;
 
   UserProfile({
-    required this.staffProfile,
+    required this.staffId,
+    required this.name,
     required this.age,
     required this.performanceImages,
     required this.performanceSummaries,
@@ -20,15 +22,14 @@ class UserProfile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-     
       body: Stack(
         children: [
           Positioned.fill(
-          child: Image.asset(
-            'assets/images/Image2.png', // Replace with your image path
-            fit: BoxFit.cover,
+            child: Image.asset(
+              'assets/images/Image2.png', // Replace with your image path
+              fit: BoxFit.cover,
+            ),
           ),
-        ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -42,14 +43,14 @@ class UserProfile extends StatelessWidget {
               SizedBox(height: 10),
               Center(
                 child: Text(
-                  'Name: ${staffProfile.name}',
+                  'Name: ${name}',
                   style: TextStyle(fontSize: 24),
                 ),
               ),
               SizedBox(height: 10),
               Center(
                 child: Text(
-                  'Staff-ID: ${staffProfile.staffId}',
+                  'Staff-ID: ${staffId}',
                   style: TextStyle(fontSize: 24),
                 ),
               ),

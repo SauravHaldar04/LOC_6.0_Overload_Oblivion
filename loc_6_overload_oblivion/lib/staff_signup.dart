@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:loc_6_overload_oblivion/admin_homepage.dart';
 import 'package:loc_6_overload_oblivion/resources/auth_methods.dart';
 import 'package:loc_6_overload_oblivion/staff_login.dart';
 
@@ -50,7 +51,7 @@ class _SignUpPageState extends State<SignUpPage> {
           print(res.toString());
         } else {
           Navigator.of(context)
-              .pushReplacement(MaterialPageRoute(builder: (_) => Scaffold()));
+              .pushReplacement(MaterialPageRoute(builder: (_) => LoginPage()));
         }
       }
     }
@@ -221,7 +222,6 @@ class _SignUpPageState extends State<SignUpPage> {
                               color: Colors.white,
                             ),
                           ),
-                          
                         ),
                       ),
                       const SizedBox(height: 15),
@@ -283,17 +283,15 @@ class _SignUpPageState extends State<SignUpPage> {
                         height: 48,
                         child: GestureDetector(
                           onTap: () {
-                          Navigator.of(context).push(
-                              MaterialPageRoute(builder: (_) => LoginPage()));
-                        },
+                            signUp();
+                          },
                           child: Center(
                             child: Text(
                               'SIGN UP',
                               style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 17
-                              ),
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 17),
                             ),
                           ),
                         ),

@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:loc_6_overload_oblivion/staff_profile.dart';
 
@@ -7,12 +9,7 @@ class AdminHomepage extends StatefulWidget {
 }
 
 class _AdminHomepageState extends State<AdminHomepage> {
-  
-  List<StaffProfile> staffProfiles = [
-    StaffProfile(name: 'John Doe', staffId: '001'),
-    StaffProfile(name: 'Jane Smith', staffId: '002'),
-    StaffProfile(name: 'Mike Johnson', staffId: '003'),
-  ];
+  List<String> staffProfiles = ['John Doe', "Jane Smith", "Mike Johnson"];
   List<String> dummyList = [
     'Item 1',
     'Item 2',
@@ -29,24 +26,43 @@ class _AdminHomepageState extends State<AdminHomepage> {
               fit: BoxFit.cover,
             ),
           ),
-          ListView.builder(
-            itemCount: staffProfiles.length,
-            itemBuilder: (context, index) {
-              return GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => UserProfile(staffProfile: staffProfiles[index], age: "18", performanceImages: dummyList, performanceSummaries: dummyList),
-                    ),
-                  );
-                },
-                child: StaffProfileCard(
-                  staffId: staffProfiles[index].staffId,
-                ),
-              );
-            },
-          ),
+          StreamBuilder(
+              stream:
+                  FirebaseFirestore.instance.collection('staff').snapshots(),
+              builder: (context, snapshot) {
+                if (snapshot.hasError) {
+                  return Text('Error: ${snapshot.error}');
+                }
+
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(child: CircularProgressIndicator());
+                }
+                return ListView.builder(
+                  itemCount: snapshot.data!.docs.length,
+                  itemBuilder: (context, index) {
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => UserProfile(
+                                name: staffProfiles[index],
+                                staffId: snapshot.data!.docs
+                                    .elementAt(index)['staffid'],
+                                age: "25",
+                                performanceImages: dummyList,
+                                performanceSummaries: dummyList),
+                          ),
+                        );
+                      },
+                      child: StaffProfileCard(
+                        staffId:
+                            snapshot.data!.docs.elementAt(index)['staffid'],
+                      ),
+                    );
+                  },
+                );
+              })
         ],
       ),
     );
@@ -55,9 +71,8 @@ class _AdminHomepageState extends State<AdminHomepage> {
 
 class StaffProfile {
   final String name;
-  final String staffId;
-
-  StaffProfile({required this.name, required this.staffId});
+  final String staffID;
+  StaffProfile({required this.name, required this.staffID});
 }
 
 class StaffProfileCard extends StatelessWidget {
