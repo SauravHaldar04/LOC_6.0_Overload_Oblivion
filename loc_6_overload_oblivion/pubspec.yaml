@@ -50,6 +50,7 @@ dependencies:
   slide_countdown: ^1.5.2
   provider: ^6.1.2
   http: ^1.2.0
+  stability_image_generation: ^0.0.4
 
 dev_dependencies:
   flutter_test:

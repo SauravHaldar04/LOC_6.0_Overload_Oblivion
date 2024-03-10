@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:loc_6_overload_oblivion/AI_image.dart';
 import 'package:loc_6_overload_oblivion/admin_homepage.dart';
 import 'package:loc_6_overload_oblivion/staff_roompage.dart';
 
@@ -14,7 +15,7 @@ class _AdminBottombarState extends State<AdminBottombar> {
 
   static final List<Widget> _widgetOptions = <Widget>[
     AdminHomepage(),
-    Scaffold(),
+    MyApp2(),
   ];
 
   void _onItemTapped(int index) {
@@ -40,7 +41,7 @@ class _AdminBottombarState extends State<AdminBottombar> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.list),
-            label: 'Rooms',
+            label: 'AI_Image_Generation',
           ),
         ],
       ),
